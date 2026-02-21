@@ -44,8 +44,11 @@
 // bootloader.
 
 #include QMK_KEYBOARD_H
+#include "print.h"
 
 bool dip_switch_update_mask_user(uint32_t state) {
+    dprintf("DIP State: %lu\n", state);
+    // DIP 1 + 2
     switch (state & 0b11) {
         case 0b00: // QWERTY basic
             layer_off(1);
@@ -68,21 +71,25 @@ bool dip_switch_update_mask_user(uint32_t state) {
             layer_on(3);
             break;
     }
+    // DIP 3
     if (state & (1 << 2)) {
         layer_on(4);
     } else {
         layer_off(4);
     }
+    // DIP 4
     if (state & (1 << 3)) {
         layer_on(5);
     } else {
         layer_off(5);
     }
+    // DIP 5
     if (state & (1 << 4)) {
         layer_on(6);
     } else {
         layer_off(6);
     }
+    // DIP 6
     if (state & (1 << 5)) {
         layer_on(7);
     } else {
@@ -147,14 +154,14 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
         _______,          KC_Z,    KC_X,    KC_C,    KC_V,    KC_B,    KC_K,    KC_M,    _______, _______, _______,          _______,             _______,
         _______, _______, _______,                            _______,                            _______, _______, _______, _______,    _______, _______, _______
     ),
-    // Layer 4: Capslock remap overlay. Note that this overrides the second
+    // Layer 4 (MODIFIED): Capslock remap overlay. Note that this overrides the second
     // backspace in Colemak if combined.
     [4] = LAYOUT_tkl_ansi(
         _______,          _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______,    _______, _______, _______,
 
         _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______,    _______, _______, _______,
         _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______,    _______, _______, _______,
-        KC_LCTL, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______,          _______,
+        KC_GRV, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______,          _______,
         _______,          _______, _______, _______, _______, _______, _______, _______, _______, _______, _______,          _______,             _______,
         _______, _______, _______,                            _______,                            _______, _______, _______, _______,    _______, _______, _______
     ),
@@ -199,3 +206,12 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
         _______, _______, _______,                            _______,                            _______, _______, _______, _______,    _______, _______, _______
     ),
 };
+
+
+bool process_record_user(uint16_t keycode, keyrecord_t *record) {
+  // If console is enabled, it will print the matrix position and status of each key pressed
+  #ifdef CONSOLE_ENABLE
+    dprintf("KL: kc: 0x%04X, col: %2u, row: %2u, pressed: %u, time: %5u, int: %u, count: %u\n", keycode, record->event.key.col, record->event.key.row, record->event.pressed, record->event.time, record->tap.interrupted, record->tap.count);
+  #endif
+  return true;
+}
