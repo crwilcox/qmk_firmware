@@ -21,5 +21,7 @@
 #undef STM32_PWM_USE_ADVANCED
 #define STM32_PWM_USE_ADVANCED TRUE
 
+// TODO(crwilcox): examples show using TIM4, not TIM1. Why?
+// https://docs.qmk.fm/features/backlight#arm-pwm-driver STM32_PWM_USE_TIM4
 #undef STM32_PWM_USE_TIM1
 #define STM32_PWM_USE_TIM1 TRUE
