@@ -1,3 +1,5 @@
+NOTE: While you may be able to flash via QMK, I wasn't able to make that work. so I used mdloader.
+
 # ALT
 
 ![ALT](https://massdrop-s3.imgix.net/product-images/alt-keyboard/FP/WNxwR19gTua3nxiiQWP3_AI7B3311%20copy%20page.jpg?auto=format&fm=jpg&fit=max&w=700&h=467&dpr=1&q=80)
